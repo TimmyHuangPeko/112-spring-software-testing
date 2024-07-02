@@ -169,9 +169,9 @@ describe('Test DU-pairs of linecnt in stut', () => {
     });
 });
 
-describe.only('Test DU-pairs of #lastdelimit in constructor, stut, #checkDupes', () => {
+describe('Test DU-pairs of #lastdelimit in constructor, stut, #checkDupes', () => {
     // (main, #lastdelimit, 21) - (#checkDupes(line 46), #lastdelimt, 64)
-    it.only('has #lastdelimit = true & callsite: #checkDupes', () => {
+    it('has #lastdelimit = true at main & callsite: 1st #checkDupes', () => {
         exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
             if(error) {
                 console.error(`exec error: ${error}`);
@@ -180,4 +180,537 @@ describe.only('Test DU-pairs of #lastdelimit in constructor, stut, #checkDupes',
             assert.strictEqual(stdout.trim(), "");
         });
     });
+
+    // (main, #lastdelimit, 21) - (#checkDupes(line 53), #lastdelimt, 64)
+    it('has #lastdelimit = true at main & callsite: 2nd #checkDupes', () => {
+        exec('echo "" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (stut, #lastdelimit, 49) - (#checkDupes(line 46), #lastdelimt, 64)
+    it('has #lastdelimit = false at stut & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (stut, #lastdelimit, 49) - (#checkDupes(line 53), #lastdelimt, 64)
+    it('has #lastdelimit = false at stut & callsite: 2nd #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 46), #lastdelimit, 67) - (#checkDupes(line 46), #lastdelimt, 64)
+    it('has #lastdelimit = true at 1st #checkDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a!!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 46), #lastdelimit, 67) - (#checkDupes(line 53), #lastdelimt, 64)
+    it('has #lastdelimit = true at lst #checkDupes & callsite: 2nd #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 53), #lastdelimit, 67) - (#checkDupes(line 46), #lastdelimt, 64)
+    it('has #lastdelimit = true at 2nd #checkDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a\n!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 53), #lastdelimit, 67) - (#checkDupes(line 53), #lastdelimt, 64)
+    it('has #lastdelimit = true at 2nd #checkDupes & callsite: 2nd #checkDupes', () => {
+        exec('echo "a\n" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+});
+
+
+describe('Test DU-pairs of #curWord in constructor, stut, #checkDupes', () =>{
+    // (main, #curWord, 22) - (#checkDupes(line 46), #curWord, 68) *infeasiblen *1* reaching specified use require #lastdelimit = false, which basic block has another define #curWord += c, making this path not def-clear.
+    /*
+    it('has #curWold = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (main, #curWord, 22) - (#checkDupes(line 46), #curWord, 70) *infeasiblen *1*
+    /*
+    it('has #curWold = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (main, #curWord, 22) - (#checkDupes(line 46), #curWord, 73) *infeasible *1*
+    /*
+    it('has #curWord = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (main, #curWord, 22) - (#checkDupes(line 53), #curWord, 68) *infeasible *1*
+    /*
+    it('has #curWord = "" at main & callsite: 2nd #checkDupes', () => {
+        exec('echo "\n" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (main, #curWord, 22) - (#checkDupes(line 53), #curWord, 70) *infeasible *1*
+    /*
+    it('has #curWord = "" at main & callsite: 2nd #checkDupes', () => {
+        exec('echo "\n" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (main, #curWord, 22) - (#checkDupes(line 53), #curWord, 73) *infeasible *1*
+    /*
+    it('has #curWord = "" at main & callsite: 2nd #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (stut, #curWord, 50) - (#checkDupes(line 46), #curWord, 68)
+    it('has #curWord += c at stut & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (stut, #curWord, 50) - (#checkDupes(line 46), #curWord, 70)
+    it('has #curWord += c at stut & callsite: 1st #checkDupes', () => {
+        exec('echo "a!a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 1: a a");
+        });
+    });
+
+    // (stut, #curWord, 50) - (#checkDupes(line 46), #curWord, 73)
+    it('has #curWord += c at stut & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (stut, #curWord, 50) - (#checkDupes(line 53), #curWord, 68)
+    it('has #curWord += c at stut & callsite: 2nd #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (stut, #curWord, 50) - (#checkDupes(line 53), #curWord, 70)
+    it('has #curWord += c at stut & callsite: 2nd #checkDupes', () => {
+        exec('echo "a!a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 1: a a");
+        });
+    });
+
+    // (stut, #curWord, 50) - (#checkDupes(line 53), #curWord, 73)
+    it('has #curWord += c at stut & callsite: 2nd #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 46), #curWord, 75 - (#checkDupes(line 46), #curWord, 68) *infeasible *2* in basic block of defining #curWord, #lastdelimit = true, making latter entering of this basic block impossible without the basic block containing #lastdelimit = false and #curWord += c. Therefore the path is not def-clear. 
+    /*
+    it('has #curWord = "" at 1st #chekDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 46), #curWord, 75 - (#checkDupes(line 46), #curWord, 70) *infeasible *2*
+    /*
+    it('has #curWord = "" at 1st #chekDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 46), #curWord, 75 - (#checkDupes(line 46), #curWord, 73) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 46), #curWord, 75 - (#checkDupes(line 53), #curWord, 68) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 46), #curWord, 75 - (#checkDupes(line 53), #curWord, 70) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 46), #curWord, 75 - (#checkDupes(line 53), #curWord, 73) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 53), #curWord, 75 - (#checkDupes(line 46), #curWord, 68) *infeasible *2* 
+    /*
+    it('has #curWord = "" at 1st #chekDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 53), #curWord, 75 - (#checkDupes(line 46), #curWord, 70) *infeasible *2* 
+    /*
+    it('has #curWord = "" at 1st #chekDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 53), #curWord, 75 - (#checkDupes(line 46), #curWord, 73) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 53), #curWord, 75 - (#checkDupes(line 53), #curWord, 68) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 53), #curWord, 75 - (#checkDupes(line 53), #curWord, 70) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 53), #curWord, 75 - (#checkDupes(line 53), #curWord, 73) *infeasible *2*
+    /*
+    it('has #curWord = true at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+});
+
+describe('Test DU-pairs of #prevWord in constructor, #checkDupes', () => {
+    // (main, #prevWord, 23) - (#checkDupes(line 46), #prevWord, 68)
+    it('has #prevWord = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (main, #prevWord, 23) - (#checkDupes(line 46), #prevWord, 70) *infeasible *3* executing console.log implies that #curWord === #prevWord, but this require #prevWord = #curWord in advanced so that #prevWord won't be "" (which cannot be compared), which make the path not def-clear
+    /*
+    it('has #prevWord = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 1: a a");
+        });
+    });
+    */
+
+    // (main, #prevWord, 23) - (#checkDupes(line 53), #prevWord, 68)
+    it('has #prevWord = "" at main & callsite: 2nd #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (main, #prevWord, 23) - (#checkDupes(line 53), #prevWord, 70) *infeasible *3*
+    /*
+    it.only('has #prevWord = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+    */
+
+    // (#checkDupes(line 46), #prevWord, 73) - (#checkDupes(line 46), #prevWord, 68)
+    it('has #prevWord = "" at 1st #checkDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a!b!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 46), #prevWord, 73) - (#checkDupes(line 46), #prevWord, 70)
+    it('has #prevWord = "" at 1st #checkDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a!a!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 1: a a");
+        });
+    });
+
+    // (#checkDupes(line 46), #prevWord, 73) - (#checkDupes(line 53), #prevWord, 68)
+    it('has #prevWord = "" at 1st #checkDupes & callsite: 2nd #checkDupes', () => {
+        exec('echo "a!b" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 46), #prevWord, 73) - (#checkDupes(line 53), #prevWord, 70)
+    it('has #prevWord = "" at 1st #checkDupes & callsite: 2nd #checkDupes', () => {
+        exec('echo "a!a" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 1: a a");
+        });
+    });
+
+    // (#checkDupes(line 53), #prevWord, 73) - (#checkDupes(line 46), #prevWord, 68)
+    it('has #prevWord = "" at 2nd #checkDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a\nb!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 53), #prevWord, 73) - (#checkDupes(line 46), #prevWord, 70)
+    it('has #prevWord = "" at 2nd #checkDupes & callsite: 1st #checkDupes', () => {
+        exec('echo "a\na!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 2: a a");
+        });
+    });
+
+    // (#checkDupes(line 53), #prevWord, 73) - (#checkDupes(line 53), #prevWord, 68)
+    it('has #prevWord = "" at 2nd #checkDupes & callsite: 2nd #checkDupes', () => {
+        exec('echo "a\nb\n" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
+    // (#checkDupes(line 53), #prevWord, 73) - (#checkDupes(line 53), #prevWord, 70)
+    it('has #prevWord = "" at 2nd #checkDupes & callsite: 2nd #checkDupes', () => {
+        exec('echo "a\na\n" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "Repeated word on line 2: a a");
+        });
+    });
+});
+
+describe('Test DU-pairs of #delimits in #isDelimit', () => {
+    // (main, #delimits, 24) - (#isDelimit, #delimits, 83)
+    it('has #prevWord = "" at main & callsite: 1st #checkDupes', () => {
+        exec('echo "!" | node Stutter.js ""', (error, stdout, stderr) => {
+            if(error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            assert.strictEqual(stdout.trim(), "");
+        });
+    });
+
 });
